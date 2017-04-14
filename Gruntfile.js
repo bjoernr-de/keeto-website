@@ -8,6 +8,7 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-cache-breaker');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-modernizr');
+	grunt.loadNpmTasks('grunt-postcss');
 
 	grunt.initConfig(
 		{
@@ -92,6 +93,22 @@ module.exports = function(grunt)
 				}
 			},
 
+			postcss:
+			{
+				"options":
+				{
+					processors: [
+						require('autoprefixer')({
+							browsers: ['last 2 versions', 'ie 9', 'ie 10']
+						})
+					]
+				},
+				"dist":
+				{
+					src: 'webroot/static/css/frontend.css'
+				}
+			},
+
 			copy:
 			{
 				"keeto":
@@ -134,7 +151,7 @@ module.exports = function(grunt)
 				"sass":
 				{
 					"files": 'sass/**/*.scss',
-					"tasks": ['sass']
+					"tasks": ['sass', 'postcss']
 				},
 				"js":
 				{
@@ -144,6 +161,6 @@ module.exports = function(grunt)
 			},
 		});
 
-	grunt.registerTask('default', ['clean', 'modernizr', 'concat', 'uglify', 'copy', 'sass', 'cachebreaker']);
+	grunt.registerTask('default', ['clean', 'modernizr', 'concat', 'uglify', 'copy', 'sass', 'postcss', 'cachebreaker']);
 };
 
